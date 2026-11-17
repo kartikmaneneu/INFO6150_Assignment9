@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Box, Button, Card, CardContent, CircularProgress, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CircularProgress, Snackbar, TextField, Typography } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -13,6 +13,14 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [logoutSuccessOpen, setLogoutSuccessOpen] = useState(() => Boolean(location.state?.logoutSuccess));
+
+  const closeLogoutSuccess = () => {
+    setLogoutSuccessOpen(false);
+    if (location.state?.logoutSuccess) {
+      navigate('/login', { replace: true, state: null });
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,6 +61,16 @@ export default function Login() {
         </Card>
       </Box>
       <Footer />
+      <Snackbar
+        open={logoutSuccessOpen}
+        autoHideDuration={4000}
+        onClose={closeLogoutSuccess}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={closeLogoutSuccess} severity="success" variant="filled">
+          You have been logged out successfully.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

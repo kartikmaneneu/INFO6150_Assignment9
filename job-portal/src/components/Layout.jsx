@@ -1,4 +1,5 @@
-import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
+import { useState } from 'react';
+import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Toolbar, Typography } from '@mui/material';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutlineOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
@@ -16,10 +17,11 @@ const links = [
 export default function Layout() {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/login', { replace: true, state: { logoutSuccess: true } });
   };
 
   return (
@@ -42,7 +44,7 @@ export default function Layout() {
             <Typography sx={{ display: { xs: 'none', sm: 'block' }, color: '#6b7280' }}>
               {user?.fullName || user?.email || 'User'}
             </Typography>
-            <Button variant="outlined" startIcon={<LogoutIcon />} onClick={handleLogout} size="small">
+            <Button variant="outlined" startIcon={<LogoutIcon />} onClick={() => setLogoutDialogOpen(true)} size="small">
               Logout
             </Button>
           </Box>
@@ -52,6 +54,16 @@ export default function Layout() {
         <Outlet />
       </Container>
       <Footer />
+      <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)} aria-labelledby="logout-dialog-title">
+        <DialogTitle id="logout-dialog-title">Log out?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to log out of JobHub?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLogoutDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleLogout} color="error" autoFocus>Yes, log out</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
