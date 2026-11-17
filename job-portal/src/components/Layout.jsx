@@ -37,12 +37,14 @@ export default function Layout() {
               </Button>
             ))}
           </Box>
-          <Typography sx={{ display: { xs: 'none', sm: 'block' }, color: '#6b7280', mr: 1 }}>
-            {user?.fullName || user?.email || 'User'}
-          </Typography>
-          <Button variant="outlined" startIcon={<LogoutIcon />} onClick={handleLogout} size="small">
-            Logout
-          </Button>
+          <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography sx={{ display: { xs: 'none', sm: 'block' }, color: '#6b7280' }}>
+              {user?.fullName || user?.email || 'User'}
+            </Typography>
+            <Button variant="outlined" startIcon={<LogoutIcon />} onClick={handleLogout} size="small">
+              Logout
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" sx={{ py: 5 }}>
