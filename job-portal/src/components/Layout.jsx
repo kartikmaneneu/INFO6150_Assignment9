@@ -3,6 +3,7 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutlineOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Footer from './Footer';
 
 const links = [
   ['Home', '/'],
@@ -22,7 +23,7 @@ export default function Layout() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <AppBar position="sticky" elevation={0} color="transparent" sx={{ bgcolor: 'rgba(255,255,255,.96)', borderBottom: '1px solid #e5e7eb' }}>
         <Toolbar sx={{ gap: 1 }}>
           <WorkOutlineIcon color="primary" sx={{ mr: 1 }} />
@@ -47,9 +48,10 @@ export default function Layout() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="lg" sx={{ py: 5 }}>
+      <Container maxWidth="lg" sx={{ py: 5, flexGrow: 1 }}>
         <Outlet />
       </Container>
+      <Footer />
     </Box>
   );
 }
